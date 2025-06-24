@@ -14,15 +14,8 @@ export default defineComponent({
       return Math.round(pressure/koeff);
     }
 
-    function isNight(dt,sunrise,sunset){
-      const now = new Date(),
-          month = now.getUTCMonth() + 1,
-          parsePrefix = `${now.getUTCFullYear()}-${month < 10 ? '0' : ''}${month}-${now.getUTCDate()}T`,
-          dtTs = Date.parse(`${parsePrefix}${dt}`),
-          sunriseTs = Date.parse(`${parsePrefix}${sunrise}`),
-          sunsetTs = Date.parse(`${parsePrefix}${sunset}`);
-
-      return dtTs < sunriseTs || dtTs > sunsetTs;
+    function isNight(weatherItem){
+      return weatherItem.current.dt < weatherItem.current.sunrise || weatherItem.current.dt > weatherItem.current.sunset;
     }
 
     return {
@@ -38,8 +31,7 @@ export default defineComponent({
       <h1 class="title">Погода в Средиземье</h1>
 
       <ul class="weather-list unstyled-list">
-        <li v-for="weatherItem in weatherItems" class="weather-card" :class="isNight(weatherItem.current.dt,weatherItem.current.sunrise,weatherItem.current.sunset) && 'weather-card--night'">
-          {{ isNight(weatherItem.current.dt,weatherItem.current.sunrise,weatherItem.current.sunset) }}
+        <li v-for="weatherItem in weatherItems" class="weather-card" :class="{'weather-card--night':isNight(weatherItem)}">
           <div v-if="weatherItem.alert" class="weather-alert">
             <span class="weather-alert__icon">⚠️</span>
             <span class="weather-alert__description">Королевская метеослужба короля Арагорна II: Предвещается наступление сильного шторма.</span>

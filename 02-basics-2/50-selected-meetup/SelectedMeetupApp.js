@@ -5,7 +5,7 @@ export default defineComponent({
   name: 'SelectedMeetupApp',
 
   setup() {
-    const meetup = ref([]),
+    const meetup = ref(null),
           meetupNumber = ref(1),
           maxMeetupNumber = 5
 
@@ -15,7 +15,7 @@ export default defineComponent({
 
     watch(meetupNumber,async ()=>{
       meetup.value = await getMeetup(meetupNumber.value)
-    },{deep:true})
+    })
 
     return {
       meetup,
@@ -48,7 +48,7 @@ export default defineComponent({
 
       <div class="meetup-selector__cover">
         <div class="meetup-cover">
-          <h1 class="meetup-cover__title">{{ meetup.title }}</h1>
+          <h1 class="meetup-cover__title">{{ meetup?.title }}</h1>
         </div>
       </div>
 

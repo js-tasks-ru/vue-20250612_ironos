@@ -36,15 +36,7 @@ export default defineComponent({
     const query = ref(''),
           sourceEmails = ref(emails),
           filteredEmails = computed(()=>{
-            const filterResult = [];
-            sourceEmails.value.forEach((email) =>  {
-              filterResult.push({
-                value: email,
-                marked: query.value.length > 0 && email.indexOf(query.value) !== -1
-              })
-            })
-
-            return filterResult
+            return sourceEmails.value.map(email=>({value: email,marked: query.value.length > 0 && email.includes(query.value)}))
           })
 
     return {
@@ -58,7 +50,7 @@ export default defineComponent({
         <input type="search" aria-label="Search" v-model="query" />
       </div>
       <ul aria-label="Emails">
-        <li v-for="email in filteredEmails" :class="email.marked && 'marked'">
+        <li v-for="email in filteredEmails" :class="{marked: email.marked}">
           {{ email.value }}
         </li>
       </ul>
