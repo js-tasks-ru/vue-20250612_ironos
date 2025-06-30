@@ -1,9 +1,27 @@
-import { defineComponent } from 'vue'
+import { defineComponent,ref,onBeforeUnmount } from 'vue'
 
 export default defineComponent({
   name: 'UiClock',
+  props: {
+    showClock: {
+      type: Boolean,
+      default: ()=>true
+    }
+  },
 
-  setup() {},
+  setup(props) {
+    const currentTime = ref(new Date().toLocaleTimeString(navigator.language, { timeStyle: 'medium' }))
 
-  template: `<div class="clock">10:12:02</div>`,
+    const interval = setInterval(()=>{
+      currentTime.value = new Date().toLocaleTimeString(navigator.language, { timeStyle: 'medium' });
+    })
+
+    onBeforeUnmount(()=>{clearInterval(interval)})
+
+    return {
+      currentTime
+    }
+  },
+
+  template: `<div class="clock">{{ currentTime }}</div>`,
 })

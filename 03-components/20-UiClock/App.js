@@ -10,8 +10,10 @@ export default defineComponent({
 
   setup() {
     const showClock = ref(true)
+
+
     return {
-      showClock,
+      showClock
     }
   },
 
@@ -21,7 +23,7 @@ export default defineComponent({
         <input type="checkbox" v-model="showClock" />
         Отображать часы
       </label>
-      <UiClock v-if="showClock" />
+      <UiClock v-if="showClock" :showClock />
     </div>
   `,
 })
