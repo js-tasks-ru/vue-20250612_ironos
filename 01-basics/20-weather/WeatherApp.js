@@ -34,7 +34,7 @@ export default defineComponent({
         <li v-for="weatherItem in weatherItems" class="weather-card" :class="{'weather-card--night':isNight(weatherItem)}">
           <div v-if="weatherItem.alert" class="weather-alert">
             <span class="weather-alert__icon">⚠️</span>
-            <span class="weather-alert__description">Королевская метеослужба короля Арагорна II: Предвещается наступление сильного шторма.</span>
+            <span class="weather-alert__description">{{ weatherItem.alert.sender_name }}: {{ weatherItem.alert.description }}.</span>
           </div>
           <div>
             <h2 class="weather-card__name">

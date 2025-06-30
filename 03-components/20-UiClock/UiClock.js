@@ -14,7 +14,7 @@ export default defineComponent({
 
     const interval = setInterval(()=>{
       currentTime.value = new Date().toLocaleTimeString(navigator.language, { timeStyle: 'medium' });
-    })
+    },1000)
 
     onBeforeUnmount(()=>{clearInterval(interval)})
 

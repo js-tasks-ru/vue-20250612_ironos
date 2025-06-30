@@ -1,5 +1,7 @@
-import { defineComponent } from 'vue'
+import { defineComponent,toRef } from 'vue'
 import { WeatherConditionIcons } from '.././weather.service.ts'
+import WeatherAlert from './WeatherAlert'
+import WeatherDetails from './WeatherDetails'
 
 export default defineComponent({
   name: 'WeatherItem',
@@ -11,7 +13,12 @@ export default defineComponent({
     }
   },
 
-  setup(){
+  components: {
+    WeatherAlert,
+    WeatherDetails
+  },
+
+  setup(props){
     function tempConvert(temp){
       const K = 273.15;
       return (temp - K).toFixed(1);
@@ -22,18 +29,47 @@ export default defineComponent({
       return Math.round(pressure/koeff);
     }
 
+    const weatherItem = toRef(()=>props.weatherItem)
+
+    const weatherDetails = [
+      {
+        label: 'Давление',
+        measure: 'мм рт. ст.',
+        value: pressureConvert(weatherItem.value.current.pressure)
+      },
+      {
+        label: 'Влажность',
+        measure: '%',
+        value: weatherItem.value.current.humidity
+      },
+      {
+        label: 'Облачность',
+        measure: '%',
+        value: weatherItem.value.current.clouds
+      },
+      {
+        label: 'Ветер',
+        measure: 'м/с',
+        value: weatherItem.value.current.wind_speed
+      }
+    ]
+
+    const weatherTemp = tempConvert(weatherItem.value.current.temp)
+
     return {
       tempConvert,
       pressureConvert,
-      WeatherConditionIcons
+      WeatherConditionIcons,
+      weatherDetails,
+      weatherTemp
     }
   },
   template: `
     <li class="weather-card">
-      <div v-if="weatherItem.alert" class="weather-alert">
-        <span class="weather-alert__icon">⚠️</span>
-        <span class="weather-alert__description">Королевская метеослужба короля Арагорна II: Предвещается наступление сильного шторма.</span>
-      </div>
+      <WeatherAlert v-if="weatherItem.alert">
+        {{ weatherItem.alert.sender_name }}: {{ weatherItem.alert.description }}
+      </WeatherAlert>
+      
       <div>
         <h2 class="weather-card__name">
           {{ weatherItem.geographic_name }}
@@ -42,28 +78,15 @@ export default defineComponent({
           {{ weatherItem.current.dt }}
         </div>
       </div>
+      
       <div class="weather-conditions">
-        <div class="weather-conditions__icon" :title="weatherItem.current.weather.description">{{ WeatherConditionIcons[weatherItem.current.weather.id] }}️</div>
-        <div class="weather-conditions__temp">{{ tempConvert(weatherItem.current.temp) }} °C</div>
+        <div class="weather-conditions__icon" :title="weatherItem.current.weather.description">
+          {{ WeatherConditionIcons[weatherItem.current.weather.id] }}️
+        </div>
+        <div class="weather-conditions__temp">{{ weatherTemp }} °C</div>
       </div>
-      <div class="weather-details">
-        <div class="weather-details__item">
-          <div class="weather-details__item-label">Давление, мм рт. ст.</div>
-          <div class="weather-details__item-value">{{ pressureConvert(weatherItem.current.pressure) }}</div>
-        </div>
-        <div class="weather-details__item">
-          <div class="weather-details__item-label">Влажность, %</div>
-          <div class="weather-details__item-value">{{ weatherItem.current.humidity }}</div>
-        </div>
-        <div class="weather-details__item">
-          <div class="weather-details__item-label">Облачность, %</div>
-          <div class="weather-details__item-value">{{ weatherItem.current.clouds }}</div>
-        </div>
-        <div class="weather-details__item">
-          <div class="weather-details__item-label">Ветер, м/с</div>
-          <div class="weather-details__item-value">{{ weatherItem.current.wind_speed }}</div>
-        </div>
-      </div>
+      
+      <WeatherDetails :details="weatherDetails" />
     </li>
   `,
 })
