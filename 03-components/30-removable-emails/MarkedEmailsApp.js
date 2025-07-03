@@ -42,7 +42,7 @@ export default defineComponent({
     EmailList,
   },
 
-  setup() {
+  setup(props,{ emit }) {
     const emails = ref(getEmails())
     const query = ref('')
 
@@ -69,7 +69,7 @@ export default defineComponent({
       <UiFormGroup>
         <UiInput v-model.trim="query" type="search" placeholder="Поиск" aria-label="Поиск" small />
       </UiFormGroup>
-      <EmailList :emails="markedEmails" />
+      <EmailList :emails="markedEmails" @remove-email="removeEmailByIndex" />
     </div>
   `,
 })

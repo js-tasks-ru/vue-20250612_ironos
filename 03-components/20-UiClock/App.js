@@ -10,8 +10,10 @@ export default defineComponent({
 
   setup() {
     const showClock = ref(true)
+
+
     return {
-      showClock,
+      showClock
     }
   },
 
