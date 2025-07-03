@@ -23,7 +23,7 @@ export default defineComponent({
         <input type="checkbox" v-model="showClock" />
         Отображать часы
       </label>
-      <UiClock v-if="showClock" :showClock />
+      <UiClock v-if="showClock" />
     </div>
   `,
 })

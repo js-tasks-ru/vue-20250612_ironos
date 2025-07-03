@@ -24,7 +24,6 @@ export default defineComponent({
         :key="email"
         :email="email"
         :marked="isMarked"
-        :index
         @click-remove="$emit('remove-email',index)"
       />
     </ul>

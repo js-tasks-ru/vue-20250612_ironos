@@ -30,9 +30,9 @@ export default defineComponent({
 
   setup(props, { emit }) {
     // Рекомендуется для практики реализовать обработку событий внутри setup, а не непосредственно в шаблоне
-    function changeCount(event){
+    function changeCount(operator){
       const currentCount = props.count
-      const newCount = event.target.getAttribute('aria-label') == 'Increment' ? currentCount + 1  : currentCount - 1;
+      const newCount = operator == 'inc' ? currentCount + 1  : currentCount - 1;
       emit('update:count',newCount)
     }
 
@@ -43,9 +43,9 @@ export default defineComponent({
 
   template: `
     <div class="counter">
-      <UiButton aria-label="Decrement" :disabled="count == min" @click="changeCount">➖</UiButton>
+      <UiButton aria-label="Decrement" :disabled="count == min" @click="changeCount('dec')">➖</UiButton>
       <span class="count" data-testid="count">{{ count }}</span>
-      <UiButton aria-label="Increment" :disabled="count == max" @click="changeCount">➕</UiButton>
+      <UiButton aria-label="Increment" :disabled="count == max" @click="changeCount('inc')">➕</UiButton>
     </div>
   `,
 })

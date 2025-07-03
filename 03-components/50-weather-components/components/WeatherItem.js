@@ -1,4 +1,4 @@
-import { defineComponent,toRef } from 'vue'
+import { defineComponent,computed,toRef } from 'vue'
 import { WeatherConditionIcons } from '.././weather.service.ts'
 import WeatherAlert from './WeatherAlert'
 import WeatherDetails from './WeatherDetails'
@@ -19,23 +19,30 @@ export default defineComponent({
   },
 
   setup(props){
-    function tempConvert(temp){
-      const K = 273.15;
-      return (temp - K).toFixed(1);
-    }
-
-    function pressureConvert(pressure){
-      const koeff = 1/0.75;
-      return Math.round(pressure/koeff);
-    }
-
     const weatherItem = toRef(()=>props.weatherItem)
 
-    const weatherDetails = [
+    function tempConvert(){
+      const K = 273.15;
+      return (weatherItem.value.current.temp - K).toFixed(1);
+    }
+
+    function pressureConvert(){
+      const koeff = 1/0.75;
+      return Math.round(weatherItem.value.current.pressure/koeff);
+    }
+
+    const weatherTemp = computed(()=>tempConvert())
+
+    const weatherIsNight = computed(()=>{
+      return weatherItem.value.current.dt < weatherItem.value.current.sunrise ||
+          weatherItem.value.current.dt > weatherItem.value.current.sunset
+    })
+
+    const weatherDetails = computed(()=> [
       {
         label: 'Давление',
         measure: 'мм рт. ст.',
-        value: pressureConvert(weatherItem.value.current.pressure)
+        value: pressureConvert()
       },
       {
         label: 'Влажность',
@@ -52,20 +59,19 @@ export default defineComponent({
         measure: 'м/с',
         value: weatherItem.value.current.wind_speed
       }
-    ]
-
-    const weatherTemp = tempConvert(weatherItem.value.current.temp)
+    ])
 
     return {
       tempConvert,
       pressureConvert,
       WeatherConditionIcons,
       weatherDetails,
-      weatherTemp
+      weatherTemp,
+      weatherIsNight
     }
   },
   template: `
-    <li class="weather-card">
+    <li class="weather-card" :class="{'weather-card--night':weatherIsNight}">
       <WeatherAlert v-if="weatherItem.alert">
         {{ weatherItem.alert.sender_name }}: {{ weatherItem.alert.description }}
       </WeatherAlert>
