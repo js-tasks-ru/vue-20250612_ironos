@@ -4,7 +4,7 @@ import { UiRadioGroup } from '@shgk/vue-course-ui'
 import MeetupCover from './MeetupCover.vue'
 import meetups from './meetups.fixture.ts'
 
-const meetupIndex = ref(0)
+const meetupIndex = ref(1)
 const meetup = computed(() => meetups[meetupIndex.value])
 const options = meetups.map((_, index) => ({ label: index + 1, value: index }))
 </script>
