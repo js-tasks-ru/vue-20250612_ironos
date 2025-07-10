@@ -1,14 +1,18 @@
 <script setup lang="ts">
 import type { Slot } from 'vue'
 
-defineProps<{
-  for?: string,
-  label?: string,
-  description?: string,
-  hint?: string,
-  showHint?: boolean,
-  invalid?: boolean
-}>()
+withDefaults(defineProps<{
+      for?: string | undefined,
+      label?: string | undefined
+      description?: string | undefined,
+      hint?: string | undefined,
+      showHint?: boolean,
+      invalid?: boolean
+    }>(),{
+      showHint: false,
+      invalid: false
+    }
+)
 
 defineSlots<{
   default?: Slot,
