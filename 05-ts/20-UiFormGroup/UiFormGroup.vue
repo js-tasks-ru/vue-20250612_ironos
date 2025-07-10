@@ -24,7 +24,7 @@ defineSlots<{
 <template>
   <div class="form-group">
     <div class="form-group__label-wrapper">
-      <label v-if="label || $slots.label" :for="for" class="form-group__label"><slot name="label">{{ label }}</slot></label>
+      <label v-if="label || $slots.label" :for="$props.for" class="form-group__label"><slot name="label">{{ label }}</slot></label>
       <div class="form-group__description"><slot name="description">{{ description }}</slot></div>
     </div>
     <div class="form-group__control"><slot name="default"></slot></div>
