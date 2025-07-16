@@ -1,12 +1,8 @@
 <script setup lang="ts" generic="T extends string" >
-const modelValue = defineModel()
+const modelValue:{text: T} = defineModel()
 
 const props = defineProps<{
   options: {text: T, value: T}[]
-}>()
-
-const emits = defineEmits<{
-  'update:modelValue': [value: T]
 }>()
 </script>
 

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { UiIcon } from '@shgk/vue-course-ui'
-import type { ComputedRef } from 'vue'
 
 const props = defineProps<{
   organizer: string,
@@ -9,8 +8,8 @@ const props = defineProps<{
   date: number
 }>()
 
-const isoDate:ComputedRef<string> = computed(() => new Date(props.date).toISOString().slice(0, 10))
-const localDate:ComputedRef<string> = computed(() =>
+const isoDate = computed(() => new Date(props.date).toISOString().slice(0, 10))
+const localDate = computed(() =>
   new Date(props.date).toLocaleString(navigator.language, {
     year: 'numeric',
     month: 'long',

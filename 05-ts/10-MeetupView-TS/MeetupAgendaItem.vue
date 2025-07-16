@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { MeetupAgendaItemDTO } from '@shgk/vue-course-ui'
 import { computed } from 'vue'
-import type { ComputedRef } from 'vue'
 import { UiIcon } from '@shgk/vue-course-ui'
 
 const props = defineProps<{
@@ -33,8 +32,8 @@ const agendaItemIcons = {
   other: 'cal-sm',
 } as const
 
-const icon:ComputedRef<string> = computed(() => agendaItemIcons[props.agendaItem.type])
-const title:ComputedRef<string> = computed(() => agendaItemDefaultTitles[props.agendaItem.type])
+const icon = computed(() => agendaItemIcons[props.agendaItem.type])
+const title = computed(() => agendaItemDefaultTitles[props.agendaItem.type])
 </script>
 
 <template>
